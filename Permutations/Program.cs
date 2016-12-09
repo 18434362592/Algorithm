@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+//这段代码我的思路层层推进的感觉，但是效率并不高
+//看了大家的讨论，发现了一个比较好的思路，就是数组从0到N，每个数字有N种排列方法，
 namespace Permutations
 {
     public class Solution
