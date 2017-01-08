@@ -54,7 +54,7 @@ namespace Permutations
             }
         }
 
-        public static void Main()
+        /*public static void Main()
         {
             int[] nums = { 1, 2, 3,4};
             // IList<IList<int>> results = Permute(nums);
@@ -69,6 +69,6 @@ namespace Permutations
                 Console.Write("\n"+k+"\n");
             }
             Console.Read();
-        }
+        }*/
     }
 }
