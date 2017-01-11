@@ -7,15 +7,42 @@ namespace Permutations
 {
     class _3Sum
     {
-        static int overhead_sort = 0;
-        static int overhead_basic = 0;
-        static int overhead_compare = 0;
+        public static IList<IList<int>> threeSum(int[] nums)
+        {
+            Array.Sort(nums);
+            IList<IList<int>> res = new List<IList<int>>();
+            for (int i = 0; i < nums.Length - 2; i++)
+            {
+                if (i == 0 || (i > 0 && nums[i] != nums[i - 1]))
+                {
+                    int lo = i + 1, hi = nums.Length - 1, sum = 0 - nums[i];
+                    while (lo < hi)
+                    {
+                        if (nums[lo] + nums[hi] == sum)
+                        {
+                            List<int> list = new List<int>();
+                            list.Add(nums[i]);
+                            list.Add(nums[lo]);
+                            list.Add(nums[hi]);
+
+                            while (lo < hi && nums[lo] == nums[lo + 1]) lo++;
+                            while (lo < hi && nums[hi] == nums[hi - 1]) hi--;
+                            lo++; hi--;
+                        }
+                        else if (nums[lo] + nums[hi] < sum) lo++;
+                        else hi--;
+                    }
+                }
+            }
+            return res;
+        }
+
         public static IList<IList<int>> ThreeSum(int[] nums)
         {
             int n = nums.Length;
             int i, j, k; //i j k points orders respectively
             IList<IList<int>> results=new List<IList<int>>();
-            sort(nums);
+            Array.Sort(nums);
             for(i=0;i<n-2;i++)
             {
                 if(i!=0)
@@ -25,9 +52,12 @@ namespace Permutations
                 }
                 for(j=i+1;j<n-1;j++)
                 {
+                    if(nums[i]!=nums[j]&&nums[j]==nums[j-1])
+                    {
+                        continue;
+                    }
                     for (k=j+1;k<n;k++)
                     {
-                        overhead_basic++;
                         if (nums[i] + nums[k] + nums[j] == 0)
                         {               
                             List<int> list = new List<int>();
@@ -42,9 +72,54 @@ namespace Permutations
                                 if (isEquilty(results[z], list, 3)) break;
                             }
                             if (z == results.Count) results.Add(list);
+                            break;
                         }
                     }
-                    continue;               //there are not unique triplets where begin with nums[i].
+                }
+            }
+            return results;
+        }
+
+        public static IList<IList<int>> Three_Sum_Another(int[] nums)
+        {
+            int n = nums.Length;
+            int i, j, k; //i j k points orders respectively
+            int sum_two; //tempoary use
+            Boolean isHave;
+            int index = 0;
+            IList<IList<int>> results = new List<IList<int>>();
+            Array.Sort(nums);
+            for (i = 0; i < n - 2; i++)
+            {
+                if (i != 0)
+                {
+                    if (nums[i] == nums[i - 1])
+                        continue;
+                }
+                for (j = i + 1; j < n - 1; j++)
+                {
+                    if ((j-1)!=i && nums[j] == nums[j - 1])
+                    {
+                        continue;
+                    }
+                    sum_two = nums[i] + nums[j];
+                    index = search(nums,-1*sum_two,j+1,n-1,out isHave);
+                    if(isHave)
+                    {
+                        List<int> list = new List<int>();
+                        list.Add(nums[i]);
+                        list.Add(nums[j]);
+                        list.Add(nums[index]);
+                        /*if (results.Count == 0)
+                            results.Add(list);
+                        int z;
+                        for (z = 0; z < results.Count; z++)
+                        {
+                            if (isEquilty(results[z], list, 3)) break;
+                        }
+                        if (z == results.Count) results.Add(list);*/
+                        results.Add(list);
+                    }
                 }
             }
             return results;
@@ -54,11 +129,36 @@ namespace Permutations
         {
             for(int i=0;i< N-1;i++)
             {
-                overhead_compare++;
                 if (array1[i] != array2[i])
                     return false;
             }
             return true;
+        }
+
+        public static int search(int[] array, int key, int lower, int upper, out Boolean isHave)
+        {
+            int l = lower;
+            int u = upper;
+            int m;
+            while (l <= u)
+            {
+                m = (l + u) / 2;
+                if (key.CompareTo(array[m]) < 0)       //key smaller than array[m]
+                {
+                    u = m - 1;
+                }
+                else if (key.CompareTo(array[m]) > 0)   //key more than array[m]
+                {
+                    l = m + 1;
+                }
+                else
+                {
+                    isHave = true;
+                    return m;
+                }
+            }
+            isHave = false;
+            return -1;
         }
 
         public static void sort(int[] arrays)
@@ -71,7 +171,6 @@ namespace Permutations
                 minimum = i;
                 for (j = i + 1; j < N; j++)
                 {
-                    overhead_sort++;
                     if (arrays[minimum]>arrays[j]) minimum = j;
                 }
                 if (i != minimum) exch(arrays, i, minimum);
@@ -85,21 +184,23 @@ namespace Permutations
             arrays[j] = temp;
         }
 
-        public static void Main()
+       public static void Main()
         {
-            //int[] nums = TEST_1.Creat_Random(20, -10, 10);
-            int[] nums = { -14,-10,-1,8,-8,-7,-3,-2,14,10,3,3,-1,-15,6,9,-1,6,-2,-6,-8,-15,8,-3,-14,5,-1,-12,-10,-5,-9,-8,1,-3,-15,0,-3,-11,6,-11,7,-6,7,-9,-6,-10,7,1,11,-10,10,-12,-10,3,-7,-9,-7,7,-14,-9,10,14,-2,-4,-4,-10,3,1,-14,-6,5,8,-4,-11,14,-3,-6,-2,13,13,3,0,-14,8,10,-14,6,11,1,7,-13,-4,6,0,-1,10,-3,-13,-4,-2,-11,8,-8};
-            foreach(IList<int> result in ThreeSum(nums))
-            {
-                foreach(int element in result)
-                {
-                    Console.Write(element+" ");
-                }
-                Console.Write("\n");
-            }
-            Console.WriteLine("overhead_basic is "+overhead_basic+".\n");
-            Console.WriteLine("overhead_compare is " + overhead_compare + ".\n");
-            Console.WriteLine("overhead_sort is " + overhead_sort + ".\n");
+            int[] nums = TEST_1.Creat_Random(10000, -3000, 3000);
+            var time1 = System.Diagnostics.Stopwatch.StartNew();
+            //IList<IList<int>> result1 = ThreeSum(nums);
+            time1.Stop();
+            Console.WriteLine("runtime is "+time1.ElapsedMilliseconds);
+
+            var time2 = System.Diagnostics.Stopwatch.StartNew();
+            IList<IList<int>> result2 = Three_Sum_Another(nums);
+            time2.Stop();
+            Console.WriteLine("runtime is " + time2.ElapsedMilliseconds);
+
+            var time3 = System.Diagnostics.Stopwatch.StartNew();
+            IList<IList<int>> result3 = threeSum(nums);
+            time3.Stop();
+            Console.WriteLine("runtime is " + time3.ElapsedMilliseconds);
             Console.Read();
         }
     }
