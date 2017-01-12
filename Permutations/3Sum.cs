@@ -184,7 +184,7 @@ namespace Permutations
             arrays[j] = temp;
         }
 
-       public static void Main()
+       /*public static void Main()
         {
             int[] nums = TEST_1.Creat_Random(10000, -3000, 3000);
             var time1 = System.Diagnostics.Stopwatch.StartNew();
@@ -202,6 +202,6 @@ namespace Permutations
             time3.Stop();
             Console.WriteLine("runtime is " + time3.ElapsedMilliseconds);
             Console.Read();
-        }
+        }*/
     }
 }

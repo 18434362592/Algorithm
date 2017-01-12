@@ -18,26 +18,13 @@ namespace Permutations
             return arrays;
         }
 
-       /* public static void Main()
+       public static void Main()
         {
-            int[] arrays = Creat_Random(10,0,5);
-            Sort_Selection<int>.show(arrays);
-            if (!Sort_Selection<int>.isOrder_less(arrays))
-                Console.WriteLine("it's wrong order!!");
-            else
-                Console.WriteLine("This order is true!!");
-            Sort_Selection<int>.sort(arrays);
-            Sort_Selection<int>.show(arrays);
-            if (!Sort_Selection<int>.isOrder_less(arrays))
-                Console.WriteLine("it's wrong order!!");
-            else
-                Console.WriteLine("This order is true!!");
-
-            Boolean hello = false;
-            int index= Search_Binary<int>.search(arrays, 3, 0, 10, out hello);
-            Console.Write("index is "+index+".\n"+"hello is "+hello+"\n");
-            Console.Write("we have a dream");
+            //int[] arrays = Creat_Random(10,0,5);
+            int[] arrays = {1,2,4,8,16,32,64,128};
+            int result= ThreeSumCloset.ThreeSumClosest(arrays,82);
+            Console.Write(result);
             Console.Read();
-        }*/
+        }
     }
 }

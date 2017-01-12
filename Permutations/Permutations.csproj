@@ -47,6 +47,7 @@
     <Compile Include="Search_Binary.cs" />
     <Compile Include="Sort_Selection.cs" />
     <Compile Include="TEST_1.cs" />
+    <Compile Include="ThreeSumCloset.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
